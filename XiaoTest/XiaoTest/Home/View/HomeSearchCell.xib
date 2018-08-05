@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="HomeSearchCell" id="gTV-IL-0wX" customClass="HomeSearchCell">
+            <rect key="frame" x="0.0" y="0.0" width="308" height="29"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="308" height="29"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zle-bu-nlj">
+                        <rect key="frame" x="20" y="0.0" width="268" height="29"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="输入你想要的产品链接(京东or淘宝)" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ok1-t8-8Kv">
+                                <rect key="frame" x="5" y="0.0" width="218" height="29"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SR7-Vk-IZ1">
+                                <rect key="frame" x="223" y="0.0" width="45" height="29"/>
+                                <color key="backgroundColor" red="0.41027474403381348" green="0.22877991199493408" blue="0.54495227336883545" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="45" id="DG1-xl-TrW"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
+                                <state key="normal" title="提交">
+                                    <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="handlePushService" destination="gTV-IL-0wX" eventType="touchUpInside" id="kN8-Uo-FYx"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="SR7-Vk-IZ1" secondAttribute="bottom" id="Ape-4m-zY7"/>
+                            <constraint firstItem="ok1-t8-8Kv" firstAttribute="top" secondItem="Zle-bu-nlj" secondAttribute="top" id="EmQ-GC-WKE"/>
+                            <constraint firstItem="SR7-Vk-IZ1" firstAttribute="top" secondItem="Zle-bu-nlj" secondAttribute="top" id="GdA-kv-4vt"/>
+                            <constraint firstAttribute="trailing" secondItem="SR7-Vk-IZ1" secondAttribute="trailing" id="L6M-eU-VJr"/>
+                            <constraint firstItem="ok1-t8-8Kv" firstAttribute="leading" secondItem="Zle-bu-nlj" secondAttribute="leading" constant="5" id="QrB-Ms-wph"/>
+                            <constraint firstAttribute="trailing" secondItem="ok1-t8-8Kv" secondAttribute="trailing" constant="45" id="YjO-me-1Rq"/>
+                            <constraint firstAttribute="bottom" secondItem="ok1-t8-8Kv" secondAttribute="bottom" id="mtN-GW-sh7"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="Zle-bu-nlj" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="5hM-DM-XFL"/>
+                <constraint firstAttribute="trailing" secondItem="Zle-bu-nlj" secondAttribute="trailing" constant="20" id="Dat-qt-o8U"/>
+                <constraint firstItem="Zle-bu-nlj" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="a8p-EF-65H"/>
+                <constraint firstAttribute="bottom" secondItem="Zle-bu-nlj" secondAttribute="bottom" id="phs-9k-SD2"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="SEy-5g-ep8"/>
+            <size key="customSize" width="308" height="29"/>
+            <connections>
+                <outlet property="textField" destination="ok1-t8-8Kv" id="hK3-9w-cFE"/>
+            </connections>
+            <point key="canvasLocation" x="43" y="30.5"/>
+        </collectionViewCell>
+    </objects>
+</document>

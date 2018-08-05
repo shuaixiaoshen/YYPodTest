@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="HomeSecondCell" id="gTV-IL-0wX" customClass="HomeSecondCell">
+            <rect key="frame" x="0.0" y="0.0" width="305" height="124"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="305" height="124"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z5x-K5-0Jy">
+                        <rect key="frame" x="20" y="0.0" width="265" height="124"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iPhone X" translatesAutoresizingMaskIntoConstraints="NO" id="GT0-sK-WQp">
+                                <rect key="frame" x="30" y="0.0" width="90" height="124"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="90" id="nm0-48-Me1"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iPhone X" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YH1-ZY-get">
+                                <rect key="frame" x="150" y="34.5" width="81.5" height="25.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="￥666/月起" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wzv-NH-CIz">
+                                <rect key="frame" x="151.5" y="65" width="79" height="18"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="GT0-sK-WQp" secondAttribute="bottom" id="5kT-wm-7rS"/>
+                            <constraint firstItem="YH1-ZY-get" firstAttribute="centerY" secondItem="GT0-sK-WQp" secondAttribute="centerY" constant="-15" id="7rt-hB-1U1"/>
+                            <constraint firstItem="GT0-sK-WQp" firstAttribute="top" secondItem="z5x-K5-0Jy" secondAttribute="top" id="8c8-Sv-Jq2"/>
+                            <constraint firstItem="Wzv-NH-CIz" firstAttribute="top" secondItem="YH1-ZY-get" secondAttribute="bottom" constant="5" id="A2w-Mg-vSn"/>
+                            <constraint firstItem="YH1-ZY-get" firstAttribute="leading" secondItem="GT0-sK-WQp" secondAttribute="trailing" constant="30" id="JPR-ZV-mao"/>
+                            <constraint firstItem="Wzv-NH-CIz" firstAttribute="centerX" secondItem="YH1-ZY-get" secondAttribute="centerX" id="XBd-a7-naw"/>
+                            <constraint firstItem="GT0-sK-WQp" firstAttribute="leading" secondItem="z5x-K5-0Jy" secondAttribute="leading" constant="30" id="vOa-eb-3ka"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="z5x-K5-0Jy" secondAttribute="trailing" constant="20" id="FK9-Wc-XuE"/>
+                <constraint firstAttribute="bottom" secondItem="z5x-K5-0Jy" secondAttribute="bottom" id="Yjn-b7-iVS"/>
+                <constraint firstItem="z5x-K5-0Jy" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="gxU-G6-LJ7"/>
+                <constraint firstItem="z5x-K5-0Jy" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="rj3-Ot-Rep"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="SEy-5g-ep8"/>
+            <size key="customSize" width="305" height="124"/>
+            <connections>
+                <outlet property="banner" destination="GT0-sK-WQp" id="Jua-FV-anj"/>
+                <outlet property="namelab" destination="YH1-ZY-get" id="FrD-g3-UlN"/>
+                <outlet property="priceLab" destination="Wzv-NH-CIz" id="fod-an-SJJ"/>
+            </connections>
+            <point key="canvasLocation" x="166.5" y="138"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="iPhone X" width="80" height="110"/>
+    </resources>
+</document>
