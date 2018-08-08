@@ -19,12 +19,17 @@
     [subView addSubview:friend];
     return friend;
 }
-- (NSString *)tranfromWithKey:(NSString *)key{
-    return [NSString stringWithFormat:@"%@",_infodic[key]];
+- (NSString *)tranfromWithKey:(NSString *)key withIndex:(NSInteger)index{
+    NSDictionary *dic  =_infoArr[index];
+    NSString *title = [NSString stringWithFormat:@"%@",dic[key]];
+    if (!title) {
+        title = @"";
+    }
+    return title;
 }
 - (void)startSetUp{
-    if (_infodic) {
-        fieldTestArr = @[[self tranfromWithKey:@"lname1"],[self tranfromWithKey:@"lsex1"],[self tranfromWithKey:@"lphone1"],[self tranfromWithKey:@"1relation1"],[self tranfromWithKey:@"lemo1"],[self tranfromWithKey:@"lname2"],[self tranfromWithKey:@"lsex2"],[self tranfromWithKey:@"lphone2"],[self tranfromWithKey:@"1relation2"],[self tranfromWithKey:@"lemo2"]];
+    if (_infoArr) {
+        fieldTestArr = @[[self tranfromWithKey:@"lname" withIndex:0],[self tranfromWithKey:@"lsex" withIndex:0],[self tranfromWithKey:@"lphone" withIndex:0],[self tranfromWithKey:@"lrelation" withIndex:0],[self tranfromWithKey:@"lmemo" withIndex:0],[self tranfromWithKey:@"lname" withIndex:1],[self tranfromWithKey:@"lsex" withIndex:1],[self tranfromWithKey:@"lphone" withIndex:1],[self tranfromWithKey:@"lrelation" withIndex:1],[self tranfromWithKey:@"lmemo" withIndex:1]];
     }else{
         fieldTestArr = @[@"",@"",@"",@"",@"",@"",@"",@"",@"",@""];
     }

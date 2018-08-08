@@ -8,18 +8,23 @@
 
 #import <UIKit/UIKit.h>
 #import "MessageModel.h"
+#import "TYAttributedLabel.h"
 
 @protocol MessageViewCellDelegate<NSObject>
 
 - (void)handleExtedBtn:(NSInteger)setion;
 
+- (void)handlePushOrder:(NSInteger)setion;
+
 @end
 
 
-@interface MessageViewCell : UITableViewCell
+@interface MessageViewCell : UITableViewCell<TYAttributedLabelDelegate>
+
 @property (weak, nonatomic) IBOutlet UILabel *title;
 @property (weak, nonatomic) IBOutlet UILabel *date;
-@property (weak, nonatomic) IBOutlet UILabel *content;
+@property (weak, nonatomic) IBOutlet UIView *baseView;
+
 @property (weak, nonatomic) IBOutlet UIButton *extedBtn;
 @property (assign, nonatomic) NSInteger setion;
 

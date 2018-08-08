@@ -55,12 +55,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    titleArr = @[@"身份认证",@"信息认证",@"联系人信息",@"常用联系人",@"运营商认证",@"淘宝认证",@"支付宝认证",@"征信认证"];
+    titleArr = @[@"身份认证",@"信息认证",@"联系人信息",@"常用联系人",@"运营商认证",@"淘宝认证",@"支付宝认证",@"学信网认证"];
     imgArr = @[@"moblie_img",@"moblie_img",@"moblie_img",@"moblie_img",@"moblie_img",@"taobao_img",@"aliPay_img",@"student_img"];
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-    [center addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardWillHideNotification object:nil];
+//    [center addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardWillHideNotification object:nil];
     NaviBarView *naviBar = [[NaviBarView alloc] init];
+    naviBar.isBackRootVC = YES;
     [self.view addSubview:naviBar];
     naviBar.title = titleArr[_sourceType];
     CetificateHeaderView *headerView = [CetificateHeaderView cetiAddSubView:self.view];
@@ -91,7 +92,7 @@
         otherView = [OtherView otherAddSubView:self.view];
         otherView.delegate = self;
         otherView.frame = CGRectMake(0, 134, CGRectGetWidth(self.view.frame), KscreenHeight - CGRectGetMaxY(headerView.frame));
-        otherView.infodic = _infoDic;
+        otherView.infoArr = _infoArr;
         otherView.code = _code;
         [otherView startSetUp];
     }else{
@@ -110,18 +111,30 @@
 - (void)registBqsSdk{
     [BqsCrawlerCloudSDK shared].fromController = self;
     [BqsCrawlerCloudSDK shared].delegate = self;
-    
-    //客户参数
-    [BqsCrawlerCloudSDK shared].partnerId = @"xiaoxiang";
-    [BqsCrawlerCloudSDK shared].certNo = [[NSUserDefaults standardUserDefaults] valueForKey:@"Card_No"];
-    [BqsCrawlerCloudSDK shared].name = [[NSUserDefaults standardUserDefaults] valueForKey:@"Card_Name"];
-    [BqsCrawlerCloudSDK shared].mobile = [UserModel defaultModel].phone;
-    NSLog(@"%@ %@ %@ %@", @"xiaoxiang",[[NSUserDefaults standardUserDefaults] valueForKey:@"Card_No"],[[NSUserDefaults standardUserDefaults] valueForKey:@"Card_Name"],[UserModel defaultModel].phone);
-    //主题
-    [BqsCrawlerCloudSDK shared].foreColor = [UIColor blackColor];
-    [BqsCrawlerCloudSDK shared].themeColor = [UIColor whiteColor];
-    [BqsCrawlerCloudSDK shared].fontColor = [UIColor blackColor];
-    [BqsCrawlerCloudSDK shared].progressBarColor = [UIColor blueColor];
+    NSString *name = [UserModel defaultModel].name;
+    NSString *identity = [UserModel defaultModel].identity;
+    if (!name) {
+        name = [[NSUserDefaults standardUserDefaults] valueForKey:@"Card_Name"];
+    }
+    if (!identity) {
+        identity = [[NSUserDefaults standardUserDefaults] valueForKey:@"Card_No"];
+    }
+    if (name && identity) {
+        //客户参数
+        [BqsCrawlerCloudSDK shared].partnerId = @"xiaoxiang";
+        [BqsCrawlerCloudSDK shared].certNo = identity;
+        [BqsCrawlerCloudSDK shared].name = name;
+        [BqsCrawlerCloudSDK shared].mobile = [UserModel defaultModel].phone;
+        //主题
+        [BqsCrawlerCloudSDK shared].foreColor = [UIColor blackColor];
+        [BqsCrawlerCloudSDK shared].themeColor = [UIColor whiteColor];
+        [BqsCrawlerCloudSDK shared].fontColor = [UIColor blackColor];
+        [BqsCrawlerCloudSDK shared].progressBarColor = [UIColor blueColor];
+    }else{
+        [self showTitleHUD:@"请先完善身份信息" wait:1 completion:^{
+            [self.navigationController popViewControllerAnimated:YES];
+        }];
+    }
 }
 
 - (void)setUpWith:(UIView *)subView{
@@ -242,15 +255,19 @@
     if(MNO_SERVICE_ID == serviceId){//运营商授权成功
         type = @"运营商";
         requestUrl = [NSString stringWithFormat:@"%@/custom/mobileAuth",KBaseUrl];
+        [UserModel defaultModel].mobile_flg = @"1";
     } else if(TB_SERVICE_ID == serviceId){//淘宝授权成功
         type = @"淘宝";
         requestUrl = [NSString stringWithFormat:@"%@/custom/taobaoAuth",KBaseUrl];
+        [UserModel defaultModel].taobao_flg = @"1";
     } else if(ALIPAY_SERVICE_ID == serviceId){//支付宝授权成功
         type = @"支付宝";
         requestUrl = [NSString stringWithFormat:@"%@/custom/zhifbAuth",KBaseUrl];
+        [UserModel defaultModel].zhifb_flg = @"1";
     } else if(CHSI_SERVICE_ID == serviceId){//学信网授权成功
         type = @"学信网征信";
         requestUrl = [NSString stringWithFormat:@"%@/custom/learnLetAuth",KBaseUrl];
+        [UserModel defaultModel].student_flg = @"1";
     } else {
         //...
     }
@@ -271,6 +288,7 @@
         }];
     } else {
         NSLog(@"%@授权失败", type);
+        [self showTitleHUD:@"授权失败,请稍后再试" wait:1 completion:nil];
     }
 }
 
@@ -298,6 +316,8 @@
         NSString *message = [NSString stringWithFormat:@"%@",data[@"message"]];
         if ([code isEqualToString:@"1"]) {
             [self pushNewCheck];
+        }else{
+            [self showTitleHUD:message wait:1 completion:nil];
         }
     } failure:^(NSString * _Nullable error) {
         NSLog(@"%@",error);
@@ -315,13 +335,15 @@
                 [self pushNewCheck];
             }];
         }
+        else{
+            [self showTitleHUD:message wait:1 completion:nil];
+        }
     } failure:^(NSString * _Nullable error) {
         NSLog(@"%@",error);
     }];
 }
 //保存个人信息
 - (void)handleSaveUserInfoWithDic:(NSDictionary *)dic{
-    [self showLoadingHUD];
     if (personView.isStu && cardImg.tag == 5556) {
         if (!outputURL1) {
             [self showTitleHUD:@"请上传芝麻分" wait:1 completion:nil];
@@ -352,6 +374,7 @@
             return;
         }
     }
+    [self showLoadingHUD];
     NSString *urlStr = [NSString stringWithFormat:@"%@/custom/complementCusInfo",KBaseUrl];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -364,7 +387,7 @@
         //二进制文件，接口key值，文件路径，图片格式
         
         if (outputURL1) {
-         [formData appendPartWithFileData:outputURL1 name:@"zhimfvideoFile" fileName:fileName mimeType:@"mp4"];
+         [formData appendPartWithFileData:outputURL1 name:@"zhimfvideoFile" fileName:fileName mimeType:@"video/mp4"];
         }
         if (!personView.isStu) {
             [formData appendPartWithFileData:outputURL2 name:@"workcardFile" fileName:fileName mimeType:@"jpeg"];
@@ -429,31 +452,52 @@
  用户头像上传
  */
 - (void)pushLoginImgWithType:(NSInteger)type{
-    //判断摄像头是否可用
-    //    BOOL isCamera = [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear];
-    //相机权限
-    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
-    if (authStatus ==AVAuthorizationStatusRestricted ||//此应用程序没有被授权访问的照片数据。可能是家长控制权限
-        authStatus ==AVAuthorizationStatusDenied)  //用户已经明确否认了这一照片数据的应用程序访问
-    {
-        [self showTitleHUD:@"请允许设备访问相机" wait:1 completion:nil];
-        return;
-    }
     //初始化图片选择控制器
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-   
-    
-    if (type == 1) {
-         imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;//设置通过照相来选取照片
+    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    imagePicker.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+    imagePicker.navigationBar.barTintColor = [UIColor colorWithRed:20.f/255.0 green:24.0/255.0 blue:38.0/255.0 alpha:1];
+    imagePicker.allowsEditing = YES; //设置拍照时的下方的工具栏是否显示，如果需要自定义拍摄界面，则可把该工具栏隐藏
+    imagePicker.delegate = self;
+    if (cardImg.tag == 3335) {
+        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;//设置通过照相来选取照片
+        [self presentViewController:imagePicker animated:YES completion:nil];
+        return;
     }else if (cardImg.tag == 5556){
         imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;//设置通过照相来选取照片
         imagePicker.mediaTypes = @[(NSString *)kUTTypeMovie];
-    }else{
-        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;//设置通过照相来选取照片
+        [self presentViewController:imagePicker animated:YES completion:nil];
+        return;
     }
-    imagePicker.allowsEditing = YES; //设置拍照时的下方的工具栏是否显示，如果需要自定义拍摄界面，则可把该工具栏隐藏
-    imagePicker.delegate = self;
-    [self presentViewController:imagePicker animated:YES completion:nil];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"选择上传方式" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *CameraAction = [UIAlertAction actionWithTitle:@"拍摄" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+        if (authStatus ==AVAuthorizationStatusRestricted ||//此应用程序没有被授权访问的照片数据。可能是家长控制权限
+            authStatus ==AVAuthorizationStatusDenied)  //用户已经明确否认了这一照片数据的应用程序访问
+        {
+            [self showTitleHUD:@"请允许设备访问相机" wait:1 completion:nil];
+            return;
+        }
+        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;//设置通过照相来选取照片
+        [self presentViewController:imagePicker animated:YES completion:nil];
+    }];
+    UIAlertAction *PhotoAction = [UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+         imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;//设置通过照相来选取照片
+//        if (type == 1) {
+//            imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;//设置通过照相来选取照片
+//        }else if (cardImg.tag == 5556){
+//            imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;//设置通过照相来选取照片
+//            imagePicker.mediaTypes = @[(NSString *)kUTTypeMovie];
+//        }else{
+//            imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;//设置通过照相来选取照片
+//        }
+        [self presentViewController:imagePicker animated:YES completion:nil];
+    }];
+    [alertController addAction:cancelAction];
+    [alertController addAction:PhotoAction];
+    [alertController addAction:CameraAction];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 //得到图片或者视频后, 调用该代理方法
@@ -466,7 +510,7 @@
             imageData2 = UIImageJPEGRepresentation(image,0.1);
         }else if(cardImg.tag == 3335){
             imageData3 = UIImageJPEGRepresentation(image,0.1);
-        }else if (cardImg.tag == 5556){
+        }else if (cardImg.tag == 5557){
             outputURL2 = UIImageJPEGRepresentation(image,0.1);
         }
         [cardImg setImage:image];
@@ -568,8 +612,8 @@
 - (void)keyboardDidShow:(NSNotification *)noti
 {
     //获取键盘的高度
-    NSDictionary *userInfo = [noti userInfo];
-    NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+//    NSDictionary *userInfo = [noti userInfo];
+//    NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
     if (!control) {
         control =  [[UIView alloc] initWithFrame:self.view.window.frame];
         UITapGestureRecognizer *tapCan = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelRemoveSelf)];
@@ -587,45 +631,50 @@
         NSLog(@"%@",data);
         [self hiddenLoadingHUD];
         NSDictionary *dataDic = data[@"data"];
-        NSInteger step = [[NSString stringWithFormat:@"%@",dataDic[@"step"]] integerValue];
-        CertificateDetailViewController *vc = [[CertificateDetailViewController alloc] init];
-        switch (step - 1) {
-            case 0:
-                vc.sourceType = 0;
-                break;
-            case 1:
-                vc.sourceType = 1;
-                break;
-            case 2:
-                vc.sourceType = 2;
-                break;
-            case 3:
-                vc.sourceType = 3;
-                break;
-            case 4:
-                vc.sourceType = 4;
-                break;
-            case 5:
-                vc.sourceType = 5;
-                break;
-            case 6:
-                vc.sourceType = 6;
-                break;
-            case 7:
-                vc.sourceType = 7;
-                break;
-            default:
-                for (UIViewController *controller in self.navigationController.viewControllers) {
-                    if ([controller isKindOfClass:[HomeDetailViewController class]]) {
-                        [self.navigationController popToViewController:controller animated:YES];
-                    }else{
-                        [self showTitleHUD:@"您已全部认证完毕" wait:1 completion:nil];
+        NSString *code = [NSString stringWithFormat:@"%@",data[@"code"]];
+        if ([code isEqualToString:@"1"]) {
+            NSInteger step = [[NSString stringWithFormat:@"%@",dataDic[@"step"]] integerValue];
+            CertificateDetailViewController *vc = [[CertificateDetailViewController alloc] init];
+            switch (step - 1) {
+                case 0:
+                    vc.sourceType = 0;
+                    break;
+                case 1:
+                    vc.sourceType = 1;
+                    break;
+                case 2:
+                    vc.sourceType = 2;
+                    break;
+                case 3:
+                    vc.sourceType = 3;
+                    break;
+                case 4:
+                    vc.sourceType = 4;
+                    break;
+                case 5:
+                    vc.sourceType = 5;
+                    break;
+                case 6:
+                    vc.sourceType = 6;
+                    break;
+                case 7:
+                    vc.sourceType = 7;
+                    break;
+                case 8:
+                    for (UIViewController *controller in self.navigationController.viewControllers) {
+                        if ([controller isKindOfClass:[HomeDetailViewController class]]) {
+                            [self.navigationController popToViewController:controller animated:YES];
+                        }else{
+                            [self showTitleHUD:@"您已全部认证完毕" wait:1 completion:nil];
+                        }
                     }
-                }
-                return ;
-                break;
+                    return ;
+                    break;
+                default:
+                    break;
+            }
+            [self.navigationController pushViewController:vc animated:YES];
         }
-        [self.navigationController pushViewController:vc animated:YES];
     } failure:^(NSString * _Nullable error) {
         [self hiddenLoadingHUD];
     }];

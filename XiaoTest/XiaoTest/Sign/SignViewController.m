@@ -23,6 +23,8 @@
     UIButton *_getSmsBtn;
     UIButton *fastBtn;
     UILabel *signLab;
+    UILabel *changeLab;
+    UIButton *fuBtn;
 }
 
 - (UIScrollView *)scrollView{
@@ -81,30 +83,21 @@
         make.left.equalTo(logoImg.mas_right).mas_offset(3);
         make.top.equalTo(logoLab.mas_bottom).mas_offset(5);
     }];
-    UIButton *tranBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-    [tranBtn setTitle:@"切换" forState:UIControlStateNormal];
-    [headerLogo addSubview:tranBtn];
-    [tranBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.right.mas_offset(@0);
-        make.width.mas_offset(@45);
-        make.height.mas_offset(@20);
+    UIButton *dissMissBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [dissMissBtn setImage:[UIImage imageNamed:@"close"] forState:UIControlStateNormal];
+    dissMissBtn.titleLabel.font = [UIFont systemFontOfSize:13];
+    [headerLogo addSubview:dissMissBtn];
+    [dissMissBtn addTarget:self action:@selector(handleCancle) forControlEvents:UIControlEventTouchUpInside];
+    [dissMissBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_offset(@0);
+        make.right.mas_offset(@-15);
+        make.width.height.mas_offset(@20);
     }];
-    [tranBtn addTarget:self action:@selector(handleTranBtn) forControlEvents:UIControlEventTouchUpInside];
     [self addMidViewWithHeaderView:headerLogo];
 }
-
-- (void)handleTranBtn{
-    if (_isRegist) {
-        _isRegist = NO;
-        [fastBtn setTitle:@"快速登录" forState:UIControlStateNormal];
-        signLab.text = @"登录即同意";
-    }else{
-        _isRegist = YES;
-        [fastBtn setTitle:@"快速注册" forState:UIControlStateNormal];
-        signLab.text = @"注册即同意";
-    }
+- (void)handleCancle{
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
-
 
 - (void)addMidViewWithHeaderView:(UIView *)headerView{
     UIView *midView = [[UIView alloc] init];
@@ -204,10 +197,46 @@
     [fastBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_offset(@-20);
         make.left.mas_offset(@20);
-        make.top.equalTo(passwordView.mas_bottom).mas_offset(50);
+        make.top.equalTo(passwordView.mas_bottom).mas_offset(20);
         make.height.mas_offset(@36);
     }];
+    [self addChangeViewWithMidView:midView];
     [self addBottomViewWithMidView:midView];
+}
+
+- (void)addChangeViewWithMidView:(UIView *)midView{
+    UIView *bottomView = [[UIView alloc] init];
+    [midView addSubview:bottomView];
+    [bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_offset(@20);
+        make.right.mas_offset(@-20);
+        make.top.equalTo(fastBtn.mas_bottom).mas_offset(3);
+        make.height.mas_offset(@20);
+    }];
+    changeLab = [[UILabel alloc] init];
+    [bottomView addSubview:changeLab];
+    changeLab.textColor = [UIColor grayColor];
+    changeLab.font = [UIFont boldSystemFontOfSize:12];
+    [changeLab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_offset(@10);
+        make.centerY.equalTo(bottomView);
+    }];
+    fuBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+    if (_isRegist) {
+        changeLab.text = @"已有账号？";
+        [fuBtn setTitle:@"立即登录" forState:UIControlStateNormal];
+    }else{
+        changeLab.text = @"没有账号？";
+        [fuBtn setTitle:@"立即注册" forState:UIControlStateNormal];
+    }
+    
+    fuBtn.titleLabel.font = [UIFont systemFontOfSize:12];
+    [bottomView addSubview:fuBtn];
+    [fuBtn addTarget:self action:@selector(handleChangeBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [fuBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(changeLab.mas_right);
+        make.centerY.equalTo(bottomView);
+    }];
 }
 
 - (void)addBottomViewWithMidView:(UIView *)midView{
@@ -232,15 +261,25 @@
         make.centerX.equalTo(bottomView).mas_offset(-30);
         make.centerY.equalTo(bottomView);
     }];
-    UIButton *fuBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-    [fuBtn setTitle:@"用户服务协议" forState:UIControlStateNormal];
-    fuBtn.titleLabel.font = [UIFont systemFontOfSize:13];
-    [bottomView addSubview:fuBtn];
-    [fuBtn addTarget:self action:@selector(handleAgree:) forControlEvents:UIControlEventTouchUpInside];
-    [fuBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    UIButton *aggreeBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+    [aggreeBtn setTitle:@"用户服务协议" forState:UIControlStateNormal];
+    aggreeBtn.titleLabel.font = [UIFont systemFontOfSize:13];
+    [bottomView addSubview:aggreeBtn];
+    [aggreeBtn addTarget:self action:@selector(handleAgree:) forControlEvents:UIControlEventTouchUpInside];
+    [aggreeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(signLab.mas_right);
         make.centerY.equalTo(bottomView);
     }];
+}
+
+- (void)handleChangeBtn:(UIButton *)btn{
+    SignViewController *signVc = [[SignViewController alloc] init];
+    if (_isRegist) {
+        signVc.isRegist = NO;
+    }else{
+        signVc.isRegist = YES;
+    }
+    [self.navigationController pushViewController:signVc animated:YES];
 }
 
 - (void)handleAgree:(UIButton *)btn{
@@ -255,7 +294,7 @@
 - (void)handleSendCode{
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     [dic setValue:_moblieField.text forKey:@"phone"];
-    [dic setValue:[NSString stringWithFormat:@"%@%@%@",[self getRandomStringWithNum:6],NSUserDefaultsGet(Session_token),[self getRandomStringWithNum:6]] forKey:@"token"];
+    [dic setValue:[NSString stringWithFormat:@"%@%@%@",[self getRandomStringWithNum:6],NSUserDefaultsGet(Alreadey_token),[self getRandomStringWithNum:6]] forKey:@"token"];
     NSString *requestUrl;
     if (_isRegist) {
         requestUrl = [NSString stringWithFormat:@"%@/custom/sendRegistCode",KBaseUrl];
@@ -266,10 +305,12 @@
         NSLog(@"%@",data);
         NSString *code = [NSString stringWithFormat:@"%@",data[@"code"]];
         NSString *message = [NSString stringWithFormat:@"%@",data[@"message"]];
-        if (![code isEqualToString:@"1"]) {
-            [self showTitleHUD:message wait:1 completion:nil];
+        if ([code isEqualToString:@"1"]) {
+            [self showTitleHUD:message wait:1 completion:^{
+                [self gcdStartTimer];
+            }];
         }else{
-            [self gcdStartTimer];
+            [self showTitleHUD:message wait:1 completion:nil];
         }
         
         yzmToken = [data valueForKey:@"data"];
@@ -299,16 +340,15 @@
             model.isSign = YES;
             [model configureSignInModelWithDictionary:dataDic[@"custom"]];
             NSUserDefaultsSave(dataDic[@"token"], Session_token);
-            NSUserDefaultsSave(@"Old_User", Old_User);
             [self complexObjectArchiverWithDB_Name:@"user_db" Model:model];
             [[NSNotificationCenter defaultCenter] postNotificationName:Sign_Success object:nil];
             if (_isRegist) {
                 [self showTitleHUD:@"注册成功" wait:1 completion:^{
-                    [self dismissViewControllerAnimated:YES completion:nil];
+                    [self.navigationController popToRootViewControllerAnimated:YES];
                 }];
             }else{
                 [self showTitleHUD:@"登陆成功" wait:1 completion:^{
-                    [self dismissViewControllerAnimated:YES completion:nil];
+                    [self.navigationController popToRootViewControllerAnimated:YES];
                 }];
             }
         }else{

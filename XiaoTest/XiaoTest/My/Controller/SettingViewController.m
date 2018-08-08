@@ -62,10 +62,10 @@
     cell.textLabel.font = [UIFont systemFontOfSize:13];
     NSArray *titleArr;
     if (indexPath.section == 0) {
-        titleArr =@[@"乐享租协议",@"用户注册协议"];
+        titleArr =@[@"还款管理协议",@"用户注册协议"];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }else if (indexPath.section == 1){
-        titleArr =@[@"征信查询授权书",@"数码产品租赁服务协议"];
+        titleArr =@[@"征信查询授权书",@"笑享租租赁协议"];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }else{
         titleArr = @[@"版本号"];
@@ -73,7 +73,7 @@
         [cell.contentView addSubview:versionLab];
         versionLab.font = [UIFont systemFontOfSize:13];
         versionLab.textColor = [UIColor grayColor];
-        versionLab.text = @"20180801XXZ01";
+        versionLab.text = @"1.0.0";
         [versionLab mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.mas_offset(@-15);
             make.centerY.equalTo(cell.contentView);
@@ -116,11 +116,17 @@
     WebViewController *webVc = [[WebViewController alloc] init];
     webVc.hidesBottomBarWhenPushed = YES;
     if (indexPath.section == 0) {
-       webVc.webUrl = [NSString stringWithFormat:@"%@/login.html",KBaseUrl];
-        [self.navigationController pushViewController:webVc animated:YES];
+        if (indexPath.row == 0) {
+            webVc.webUrl = [NSString stringWithFormat:@"%@/paymanage.html",KBaseUrl];
+            [self.navigationController pushViewController:webVc animated:YES];
+        }else{
+            webVc.webUrl = [NSString stringWithFormat:@"%@/login.html",KBaseUrl];
+            [self.navigationController pushViewController:webVc animated:YES];
+        }
+       
     }else if (indexPath.section == 1){
         if (indexPath.row == 0) {
-            webVc.webUrl = [NSString stringWithFormat:@"%@/proxy.html",KBaseUrl];
+            webVc.webUrl = [NSString stringWithFormat:@"%@/proxy.html?cid=%@",KBaseUrl,[UserModel defaultModel].cid];
             [self.navigationController pushViewController:webVc animated:YES];
         }else{
             webVc.webUrl = [NSString stringWithFormat:@"%@/contract.html",KBaseUrl];
@@ -134,6 +140,7 @@
     UserModel *model = [UserModel defaultModel];
     [model logOut];
     [self showTitleHUD:@"注销成功" wait:1 completion:^{
+      [[NSNotificationCenter defaultCenter] postNotificationName:Sign_Out object:nil];
       [self.navigationController popViewControllerAnimated:YES];
     }];
     

@@ -14,6 +14,9 @@
 
 @property(strong, nonatomic) NSDictionary *infoDic;
 
+@property(strong, nonatomic) NSArray *infoArr;
+
+
 @property(assign, nonatomic) NSInteger code;
 
 @end

@@ -8,6 +8,7 @@
 
 #import "HomeViewController.h"
 #import "HomeDetailViewController.h"
+#import "MessageViewController.h"
 #import "HeaderViewCell.h"
 #import "HomeModel.h"
 #import "HomeFistrCell.h"
@@ -55,6 +56,21 @@ typedef NS_ENUM(NSInteger, UICollectionViewState) {
     }
     return _scrollView;
 }
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    if (NSUserDefaultsGet(Session_token)) {
+        [self getCustomInfo];
+        UserModel *model = [UserModel defaultModel];
+        UserModel *oldModle = [self getObjectArchiverWithDB_Name:@"user_db"];
+        model.cid = oldModle.cid;
+        model.phone = oldModle.phone;
+        model.name = oldModle.name;
+        model.headimg = oldModle.headimg;
+        NSLog(@"%@",model.phone);
+    }
+}
+
 
 - (void)handleSignSuccessBlock{
     [self showLoadingHUD];
@@ -155,19 +171,6 @@ typedef NS_ENUM(NSInteger, UICollectionViewState) {
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleSignSuccessBlock) name:Sign_Success object:nil];
     [self handleSignSuccessBlock];
-    if (!NSUserDefaultsGet(Session_token)) {
-        [self getToken];
-    }else{
-        [self getCustomInfo];
-        UserModel *model = [UserModel defaultModel];
-        UserModel *oldModle = [self getObjectArchiverWithDB_Name:@"user_db"];
-        model.cid = oldModle.cid;
-        model.phone = oldModle.phone;
-        model.name = oldModle.name;
-        model.headimg = oldModle.headimg;
-        NSLog(@"%@",model.phone);
-    }
-    
     // Do any additional setup after loading the view.
 }
 
@@ -251,7 +254,6 @@ typedef NS_ENUM(NSInteger, UICollectionViewState) {
             return cell;
         }else if (indexPath.section == 2){
             HomeSecondCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"HomeSecondCell" forIndexPath:indexPath];
-            NSInteger index = indexPath.item + 2 * (indexPath.section - 3);
             if (leaseunitArr1.count > 0) {
                [cell configureModel:leaseunitArr1[0]];
             }
@@ -398,23 +400,6 @@ typedef NS_ENUM(NSInteger, UICollectionViewState) {
     }
 }
 
-//获取sessiontoken
-//- (void)getToken{
-//    [self postWithURLString:[NSString stringWithFormat:@"%@/custom/getYzmToken",KBaseUrl] parameters:nil success:^(id _Nullable responseObject) {
-//        NSString *token = [responseObject valueForKey:@"data"];
-//        if (token) {
-//            NSUserDefaultsSave(token, Session_token);
-//            SignViewController *vc = [[SignViewController alloc] init];
-//            if (![[NSUserDefaults standardUserDefaults] valueForKey:Old_User]) {
-//                vc.isRegist = YES;
-//            }
-//            [self presentViewController:vc animated:YES completion:nil];
-//        }
-//    } failure:^(NSString * _Nullable error) {
-//        NSLog(@"获取token失败:%@",error);
-//    }];
-//}
-
 //  键盘弹出触发该方法
 - (void)keyboardDidShow:(NSNotification *)noti
 {
@@ -436,6 +421,11 @@ typedef NS_ENUM(NSInteger, UICollectionViewState) {
 - (void)keyboardDidHide:(NSNotification *)noti
 {
     
+}
+- (IBAction)pushMessage {
+    MessageViewController *vc = [[MessageViewController alloc] init];
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)cancelRemoveSelf{

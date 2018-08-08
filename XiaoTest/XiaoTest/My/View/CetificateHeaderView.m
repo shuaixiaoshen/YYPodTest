@@ -24,7 +24,7 @@
 
 - (void)startSetUp{
     if (!_sourceArr) {
-        _sourceArr = @[@"身份认证",@"信息认证",@"联系人",@"常用联系人",@"运营商",@"淘宝",@"支付宝",@"征信"];
+        _sourceArr = @[@"身份认证",@"信息认证",@"亲属",@"常用联系人",@"运营商",@"淘宝",@"支付宝",@"学信网"];
     }
     UIView *line = [[UIView alloc] init];
     line.backgroundColor = [UIColor lightGrayColor];

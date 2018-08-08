@@ -134,7 +134,7 @@
         midLab.text = @"本期账单已结清";
     }
     
-    if (_type == 2) {
+    if (_type == 2 && [model.his_state isEqualToString:@"2"]) {
         UIImageView *btnImg = [[UIImageView alloc] init];
         [footView addSubview:btnImg];
         btnImg.userInteractionEnabled = YES;

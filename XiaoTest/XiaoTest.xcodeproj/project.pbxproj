@@ -95,6 +95,16 @@
 		64BD02F8210D20E10036BBA5 /* TradeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 64BD02F7210D20E00036BBA5 /* TradeModel.m */; };
 		64BD02FB210D3CCC0036BBA5 /* HomeDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 64BD02FA210D3CCC0036BBA5 /* HomeDetailModel.m */; };
 		64BD02FE210D64AF0036BBA5 /* FriendeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64BD02FD210D64AF0036BBA5 /* FriendeView.m */; };
+		64C1D8A0211ABE450025C11B /* NSMutableAttributedString+TY.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C1D88D211ABE440025C11B /* NSMutableAttributedString+TY.m */; };
+		64C1D8A1211ABE450025C11B /* TYAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C1D88F211ABE440025C11B /* TYAttributedLabel.m */; };
+		64C1D8A2211ABE450025C11B /* TYDrawStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C1D891211ABE440025C11B /* TYDrawStorage.m */; };
+		64C1D8A3211ABE450025C11B /* TYImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C1D893211ABE440025C11B /* TYImageCache.m */; };
+		64C1D8A4211ABE450025C11B /* TYImageStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C1D895211ABE440025C11B /* TYImageStorage.m */; };
+		64C1D8A5211ABE450025C11B /* TYLinkTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C1D897211ABE440025C11B /* TYLinkTextStorage.m */; };
+		64C1D8A6211ABE450025C11B /* TYTextContainer+Extended.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C1D898211ABE440025C11B /* TYTextContainer+Extended.m */; };
+		64C1D8A7211ABE450025C11B /* TYTextContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C1D89A211ABE440025C11B /* TYTextContainer.m */; };
+		64C1D8A8211ABE450025C11B /* TYTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C1D89C211ABE440025C11B /* TYTextStorage.m */; };
+		64C1D8A9211ABE450025C11B /* TYViewStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C1D89F211ABE440025C11B /* TYViewStorage.m */; };
 		64D4D72A20F7059A00EF0C8A /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64D4D72920F7059A00EF0C8A /* OrderViewController.m */; };
 		64D4D72D20F70AD200EF0C8A /* HomeDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64D4D72C20F70AD200EF0C8A /* HomeDetailViewController.m */; };
 		64D58FC920DFFFB800DFD982 /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 64D58FBD20DFFFB800DFD982 /* AFHTTPSessionManager.m */; };
@@ -302,6 +312,26 @@
 		64BD02FA210D3CCC0036BBA5 /* HomeDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeDetailModel.m; sourceTree = "<group>"; };
 		64BD02FC210D64AF0036BBA5 /* FriendeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FriendeView.h; sourceTree = "<group>"; };
 		64BD02FD210D64AF0036BBA5 /* FriendeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FriendeView.m; sourceTree = "<group>"; };
+		64C1D88C211ABE440025C11B /* NSMutableAttributedString+TY.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableAttributedString+TY.h"; sourceTree = "<group>"; };
+		64C1D88D211ABE440025C11B /* NSMutableAttributedString+TY.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+TY.m"; sourceTree = "<group>"; };
+		64C1D88E211ABE440025C11B /* TYAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYAttributedLabel.h; sourceTree = "<group>"; };
+		64C1D88F211ABE440025C11B /* TYAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TYAttributedLabel.m; sourceTree = "<group>"; };
+		64C1D890211ABE440025C11B /* TYDrawStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYDrawStorage.h; sourceTree = "<group>"; };
+		64C1D891211ABE440025C11B /* TYDrawStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TYDrawStorage.m; sourceTree = "<group>"; };
+		64C1D892211ABE440025C11B /* TYImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYImageCache.h; sourceTree = "<group>"; };
+		64C1D893211ABE440025C11B /* TYImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TYImageCache.m; sourceTree = "<group>"; };
+		64C1D894211ABE440025C11B /* TYImageStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYImageStorage.h; sourceTree = "<group>"; };
+		64C1D895211ABE440025C11B /* TYImageStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TYImageStorage.m; sourceTree = "<group>"; };
+		64C1D896211ABE440025C11B /* TYLinkTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYLinkTextStorage.h; sourceTree = "<group>"; };
+		64C1D897211ABE440025C11B /* TYLinkTextStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TYLinkTextStorage.m; sourceTree = "<group>"; };
+		64C1D898211ABE440025C11B /* TYTextContainer+Extended.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TYTextContainer+Extended.m"; sourceTree = "<group>"; };
+		64C1D899211ABE440025C11B /* TYTextContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYTextContainer.h; sourceTree = "<group>"; };
+		64C1D89A211ABE440025C11B /* TYTextContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TYTextContainer.m; sourceTree = "<group>"; };
+		64C1D89B211ABE440025C11B /* TYTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYTextStorage.h; sourceTree = "<group>"; };
+		64C1D89C211ABE440025C11B /* TYTextStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TYTextStorage.m; sourceTree = "<group>"; };
+		64C1D89D211ABE440025C11B /* TYTextStorageProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYTextStorageProtocol.h; sourceTree = "<group>"; };
+		64C1D89E211ABE440025C11B /* TYViewStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYViewStorage.h; sourceTree = "<group>"; };
+		64C1D89F211ABE440025C11B /* TYViewStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TYViewStorage.m; sourceTree = "<group>"; };
 		64D4D72820F7059A00EF0C8A /* OrderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderViewController.h; sourceTree = "<group>"; };
 		64D4D72920F7059A00EF0C8A /* OrderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderViewController.m; sourceTree = "<group>"; };
 		64D4D72B20F70AD200EF0C8A /* HomeDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeDetailViewController.h; sourceTree = "<group>"; };
@@ -639,6 +669,7 @@
 		6454C78320CF8E2600157BD4 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				64C1D88B211ABE440025C11B /* TYAttributedLabel */,
 				647A6A792112BA9500737786 /* AlipaySDK.bundle */,
 				647A6A782112BA9500737786 /* AlipaySDK.framework */,
 				64D77D6B2100427500ACD1D0 /* MBProgressHUD */,
@@ -802,6 +833,33 @@
 				64BAF29D20D375580052C91F /* UIView+WebCacheOperation.m */,
 			);
 			path = SDWebImage;
+			sourceTree = "<group>";
+		};
+		64C1D88B211ABE440025C11B /* TYAttributedLabel */ = {
+			isa = PBXGroup;
+			children = (
+				64C1D88C211ABE440025C11B /* NSMutableAttributedString+TY.h */,
+				64C1D88D211ABE440025C11B /* NSMutableAttributedString+TY.m */,
+				64C1D88E211ABE440025C11B /* TYAttributedLabel.h */,
+				64C1D88F211ABE440025C11B /* TYAttributedLabel.m */,
+				64C1D890211ABE440025C11B /* TYDrawStorage.h */,
+				64C1D891211ABE440025C11B /* TYDrawStorage.m */,
+				64C1D892211ABE440025C11B /* TYImageCache.h */,
+				64C1D893211ABE440025C11B /* TYImageCache.m */,
+				64C1D894211ABE440025C11B /* TYImageStorage.h */,
+				64C1D895211ABE440025C11B /* TYImageStorage.m */,
+				64C1D896211ABE440025C11B /* TYLinkTextStorage.h */,
+				64C1D897211ABE440025C11B /* TYLinkTextStorage.m */,
+				64C1D898211ABE440025C11B /* TYTextContainer+Extended.m */,
+				64C1D899211ABE440025C11B /* TYTextContainer.h */,
+				64C1D89A211ABE440025C11B /* TYTextContainer.m */,
+				64C1D89B211ABE440025C11B /* TYTextStorage.h */,
+				64C1D89C211ABE440025C11B /* TYTextStorage.m */,
+				64C1D89D211ABE440025C11B /* TYTextStorageProtocol.h */,
+				64C1D89E211ABE440025C11B /* TYViewStorage.h */,
+				64C1D89F211ABE440025C11B /* TYViewStorage.m */,
+			);
+			path = TYAttributedLabel;
 			sourceTree = "<group>";
 		};
 		64D58FBA20DFFFB800DFD982 /* AFNetworking */ = {
@@ -991,6 +1049,7 @@
 				64E171A721165877002872A6 /* MessageViewController.m in Sources */,
 				64BAF2B020D375580052C91F /* UIView+WebCacheOperation.m in Sources */,
 				64D77D712100427500ACD1D0 /* MBProgressHUD.m in Sources */,
+				64C1D8A6211ABE450025C11B /* TYTextContainer+Extended.m in Sources */,
 				6454C7A820CF8E4A00157BD4 /* NSArray+MASAdditions.m in Sources */,
 				6454C78220CF853200157BD4 /* MyViewController.m in Sources */,
 				64E171B221167B8E002872A6 /* WebViewController.m in Sources */,
@@ -1011,12 +1070,16 @@
 				64BAF2A720D375580052C91F /* SDWebImageDownloaderOperation.m in Sources */,
 				64D869A4210AE11A00300B4E /* PayViewController.m in Sources */,
 				6454C7A520CF8E4A00157BD4 /* MASLayoutConstraint.m in Sources */,
+				64C1D8A1211ABE450025C11B /* TYAttributedLabel.m in Sources */,
 				64BAF2A620D375580052C91F /* SDWebImageDownloader.m in Sources */,
+				64C1D8A0211ABE450025C11B /* NSMutableAttributedString+TY.m in Sources */,
 				6454C7A320CF8E4A00157BD4 /* MASConstraint.m in Sources */,
 				64AC462020F4641D0045BB65 /* HomeViewController.m in Sources */,
 				6454C7A920CF8E4A00157BD4 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
+				64C1D8A7211ABE450025C11B /* TYTextContainer.m in Sources */,
 				6454C7A220CF8E4A00157BD4 /* MASCompositeConstraint.m in Sources */,
 				646944E720D861D000A48C30 /* TradeViewCell.m in Sources */,
+				64C1D8A2211ABE450025C11B /* TYDrawStorage.m in Sources */,
 				64BD02FB210D3CCC0036BBA5 /* HomeDetailModel.m in Sources */,
 				64BAF27120D372490052C91F /* TAAnimatedDotView.m in Sources */,
 				64BAF2A520D375580052C91F /* SDWebImageDecoder.m in Sources */,
@@ -1025,6 +1088,7 @@
 				64BAF27020D372490052C91F /* TAAbstractDotView.m in Sources */,
 				64D58FCA20DFFFB800DFD982 /* AFNetworkReachabilityManager.m in Sources */,
 				64BD02FE210D64AF0036BBA5 /* FriendeView.m in Sources */,
+				64C1D8A8211ABE450025C11B /* TYTextStorage.m in Sources */,
 				64D58FD120E05DD100DFD982 /* SettingViewController.m in Sources */,
 				64AC462E20F467490045BB65 /* HomeSecondCell.m in Sources */,
 				64BAF2A820D375580052C91F /* SDWebImageManager.m in Sources */,
@@ -1036,6 +1100,7 @@
 				6454C76C20CF849C00157BD4 /* TabViewController.m in Sources */,
 				64F8FC3620FAFF11001D05C5 /* PersonView.m in Sources */,
 				6454C77F20CF852800157BD4 /* TradeViewController.m in Sources */,
+				64C1D8A3211ABE450025C11B /* TYImageCache.m in Sources */,
 				64BAF2A220D375580052C91F /* SDImageCache.m in Sources */,
 				64BD02F8210D20E10036BBA5 /* TradeModel.m in Sources */,
 				64BAF2A020D375580052C91F /* NSData+ImageContentType.m in Sources */,
@@ -1057,12 +1122,15 @@
 				64517A4120D2215400D68860 /* MyCell.m in Sources */,
 				64AC462420F467000045BB65 /* HeaderViewCell.m in Sources */,
 				64E1719E211629D9002872A6 /* OtherView.m in Sources */,
+				64C1D8A9211ABE450025C11B /* TYViewStorage.m in Sources */,
+				64C1D8A4211ABE450025C11B /* TYImageStorage.m in Sources */,
 				64E171A121164D8A002872A6 /* HistoryViewController.m in Sources */,
 				64D58FCB20DFFFB800DFD982 /* AFSecurityPolicy.m in Sources */,
 				64BAF2AD20D375580052C91F /* UIImageView+HighlightedWebCache.m in Sources */,
 				6454C7A620CF8E4A00157BD4 /* MASViewAttribute.m in Sources */,
 				64A544A4210E85040026B4C0 /* GFAddressPicker.m in Sources */,
 				647E0B1920F17FD400DD9FDD /* CertificateDetailViewController.m in Sources */,
+				64C1D8A5211ABE450025C11B /* TYLinkTextStorage.m in Sources */,
 				64EB10FF21056FAB002D0AB2 /* HomeModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1226,8 +1294,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F23M65C9C2;
+				DEVELOPMENT_TEAM = 52X4LGDJBL;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1245,6 +1314,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.xiaoxiangzu.com;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
 				SYSTEM_HEADER_SEARCH_PATHS = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1255,8 +1326,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F23M65C9C2;
+				DEVELOPMENT_TEAM = 52X4LGDJBL;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1274,6 +1346,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.xiaoxiangzu.com;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
 				SYSTEM_HEADER_SEARCH_PATHS = "";
 				TARGETED_DEVICE_FAMILY = "1,2";

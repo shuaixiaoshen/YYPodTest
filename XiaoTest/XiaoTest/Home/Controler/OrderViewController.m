@@ -39,12 +39,15 @@
 - (void)loadMsgInfo{
     [self postWithURLString:[NSString stringWithFormat:@"%@/book/getApplyInfoByMsgId",KBaseUrl] parameters:@{@"msgid":_msg_id} success:^(id _Nullable data) {
         NSString *code = [NSString stringWithFormat:@"%@",data[@"code"]];
+        NSString *message = [NSString stringWithFormat:@"%@",data[@"message"]];
         NSDictionary *dataDic = data[@"data"];
         if ([code isEqualToString:@"1"]) {
             _detailModel.product_price = [NSString stringWithFormat:@"%@",dataDic[@"product_price"]];
             _detailModel.product_name = [NSString stringWithFormat:@"%@",dataDic[@"product_name"]];
             _detailModel.product_leaseterm = [NSString stringWithFormat:@"%@",dataDic[@"product_lease"]];
             [self addHeaderView];
+        }else{
+            [self showTitleHUD:message wait:1 completion:nil];
         }
     } failure:^(NSString * _Nullable error) {
         [self showTitleHUD:error wait:1 completion:nil];
@@ -74,8 +77,13 @@
 - (void)handleUpdateAddress:(NSNotification *)noti{
     NSString *updateAddress = noti.object;
     [headerView removeFromSuperview];
-    headerView = nil;
     isAddress = YES;
+    if (baseView) {
+        [baseView removeFromSuperview];
+        baseView = nil;
+    }
+    baseView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KscreenWidth, CGRectGetHeight(self.view.frame) - 64)];
+    [_scrollView addSubview:baseView];
     [self addHeaderView];
     adressLab.text = updateAddress;
 }
@@ -223,7 +231,7 @@
         make.top.equalTo(timeLab.mas_bottom).mas_offset(14);
     }];
     UILabel *priceDetailLab = [[UILabel alloc] init];
-    priceDetailLab.text = _detailModel.product_price;
+    priceDetailLab.text = [NSString stringWithFormat:@"%@元",_detailModel.product_price];
     priceDetailLab.textColor = [UIColor grayColor];
     priceDetailLab.font = [UIFont systemFontOfSize:14];
     [midView addSubview:priceDetailLab];

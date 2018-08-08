@@ -11,7 +11,6 @@
 #import "ChatViewController.h"
 #import "TradeHeaderView.h"
 #import "TradeViewCell.h"
-#import "SignViewController.h"
 #import "TradeModel.h"
 #import <AlipaySDK/AlipaySDK.h>
 
@@ -128,6 +127,9 @@
                     }
                     [tradeDetArr1 addObject:detArr];
                 }else if (status == 1){
+                    if ([dataDic[@"list"] count] == 1) {
+                        model.isExted = YES;
+                    }
                   [tradeMutArr2 addObject:model];
                     NSMutableArray *detArr = [NSMutableArray array];
                     for (NSDictionary *detDic in model.paymentList) {
@@ -186,9 +188,11 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self getTradeListWithPage:1 Status:1];
-    [self getTradeListWithPage:1 Status:2];
-    [self getTradeListWithPage:1 Status:3];
+    if ([UserModel defaultModel].isSign) {
+        [self getTradeListWithPage:1 Status:1];
+        [self getTradeListWithPage:1 Status:2];
+        [self getTradeListWithPage:1 Status:3];
+    }
 }
 
 - (void)viewDidLoad {
@@ -215,8 +219,15 @@
         }];
     }
     currentTableView = [baseView viewWithTag:6666];
+    if (![UserModel defaultModel].isSign) {
+        alert1 = [[AlertView alloc] initWithFrame:CGRectMake(0, 0, KscreenWidth,CGRectGetHeight(baseView.frame)) AlertImg:[UIImage imageNamed:@"trade_null1"] AlertTitle:@"暂无已完成订单"];
+        [baseView addSubview:alert1];
     
-    
+        alert2 = [[AlertView alloc] initWithFrame:CGRectMake(KscreenWidth, 0, KscreenWidth, CGRectGetHeight(baseView.frame)) AlertImg:[UIImage imageNamed:@"trade_null"] AlertTitle:@"暂无待还订单"];
+        [baseView addSubview:alert2];
+        alert3 = [[AlertView alloc] initWithFrame:CGRectMake(2 * KscreenWidth, 0, KscreenWidth, CGRectGetHeight(baseView.frame)) AlertImg:[UIImage imageNamed:@"trade_null"] AlertTitle:@"暂无审核订单"];
+        [baseView addSubview:alert3];
+    }
     // Do any additional setup after loading the view.
 }
 
@@ -294,16 +305,22 @@
 }
 
 - (void)handleExtedCellWithCurrentSetion:(NSInteger)setion{
-    TradeModel *model = tradeMutArr1[setion];
-    if (model.isExted) {
-        model.isExted = NO;
-    }else{
-        model.isExted = YES;
-    }
     if (currentTableView.tag == 6666) {
+        TradeModel *model = tradeMutArr1[setion];
+        if (model.isExted) {
+            model.isExted = NO;
+        }else{
+            model.isExted = YES;
+        }
         [tradeMutArr1 replaceObjectAtIndex:setion withObject:model];
         [currentTableView reloadSections:[NSIndexSet indexSetWithIndex:setion] withRowAnimation:UITableViewRowAnimationNone];
     }else if (currentTableView.tag == 6667){
+        TradeModel *model = tradeMutArr2[setion];
+        if (model.isExted) {
+            model.isExted = NO;
+        }else{
+            model.isExted = YES;
+        }
         [tradeMutArr2 replaceObjectAtIndex:setion withObject:model];
         [currentTableView reloadSections:[NSIndexSet indexSetWithIndex:setion] withRowAnimation:UITableViewRowAnimationNone];
     }

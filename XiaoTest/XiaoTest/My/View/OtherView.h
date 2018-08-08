@@ -22,5 +22,6 @@
 
 @property(assign, nonatomic) id<OtherViewDelegate>delegate;
 @property(strong, nonatomic) NSDictionary *infodic;
+@property(strong, nonatomic) NSArray *infoArr;
 @property(assign, nonatomic) NSInteger code;
 @end

@@ -31,10 +31,21 @@
 @implementation MyViewController{
     UIImageView *icon;
     NSData *imageData;
+    UIView *signView;
+}
+
+- (void)handleSignSuccess{
+    [_tableView reloadData];
+}
+
+- (void)handleSignOutSuccess{
+    [_tableView reloadData];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleSignSuccess) name:Sign_Success object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleSignOutSuccess) name:Sign_Out object:nil];
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     [self.view addSubview:_tableView];
     _tableView.delegate = self;
@@ -125,12 +136,91 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     if (section == 0) {
-        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 200)];
-        [self addHeadViewWith:headerView];
-        return headerView;
+        signView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 200)];
+        [self removeAllView];
+        [self addHeadViewWith:signView];
+        return signView;
     }
     return [[UIView alloc] init];
 }
+
+-(void)removeAllView{
+    for (UIView *aView in signView.subviews) {
+        [aView removeFromSuperview];
+    }
+}
+
+- (void)addNoUserView:(UIImageView *)headerImg{
+    UIButton *conpetBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+    conpetBtn.titleLabel.font = [UIFont systemFontOfSize:11];
+    conpetBtn.layer.borderColor = [UIColor whiteColor].CGColor;
+    conpetBtn.layer.borderWidth = 1.0f;
+    conpetBtn.layer.cornerRadius = 6.0f;
+    conpetBtn.layer.masksToBounds = YES;
+    [conpetBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [signView addSubview:conpetBtn];
+    [conpetBtn setTitle:@"请先登录" forState:UIControlStateNormal];
+    conpetBtn.titleLabel.font = [UIFont systemFontOfSize:13];
+    [conpetBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(headerImg);
+        make.centerY.equalTo(headerImg).mas_offset(-15);
+        make.width.mas_offset(@75);
+        make.height.mas_offset(@45);
+    }];
+    [conpetBtn addTarget:self action:@selector(handleSignBtn:) forControlEvents:UIControlEventTouchUpInside];
+    UILabel *moblieLab = [[UILabel alloc] initWithFrame:CGRectZero];
+    moblieLab.textAlignment = NSTextAlignmentCenter;
+    moblieLab.font = [UIFont systemFontOfSize:13];
+    moblieLab.textColor = [UIColor whiteColor];
+    [signView addSubview:moblieLab];
+    moblieLab.text = @"笑享租,年轻人的信用租机";
+    [moblieLab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(headerImg);
+        make.top.equalTo(conpetBtn.mas_bottom).mas_offset(10);
+    }];
+}
+
+- (void)addUserModelView:(UIImageView *)headerImg{
+    icon = [[UIImageView alloc] initWithFrame:CGRectZero];
+    [signView addSubview:icon];
+    icon.layer.cornerRadius = 75 / 2;
+    icon.layer.masksToBounds = YES;
+    if ([UserModel defaultModel].isSign) {
+        [icon sd_setImageWithURL:[NSURL URLWithString:[UserModel defaultModel].headimg]];
+    }else{
+        icon.image = [UIImage imageNamed:@"sign_03"];
+    }
+    icon.backgroundColor = [UIColor whiteColor];
+    [icon mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(signView);
+        make.top.mas_offset(@15);
+        make.width.height.mas_offset(@75);
+    }];
+    icon.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tapHeadIcon = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlePostHeaderIcon)];
+    [icon addGestureRecognizer:tapHeadIcon];
+    UILabel *moblieLab = [[UILabel alloc] initWithFrame:CGRectZero];
+    moblieLab.textAlignment = NSTextAlignmentCenter;
+    moblieLab.font = [UIFont systemFontOfSize:13];
+    moblieLab.textColor = [UIColor whiteColor];
+    [signView addSubview:moblieLab];
+    moblieLab.text = [[UserModel defaultModel] phone];
+    [moblieLab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(headerImg);
+        make.top.equalTo(icon.mas_bottom).mas_offset(10);
+    }];
+    UIButton *conpetBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+    conpetBtn.titleLabel.font = [UIFont systemFontOfSize:11];
+    [conpetBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [signView addSubview:conpetBtn];
+    [conpetBtn setTitle:@"完善个人信息>>" forState:UIControlStateNormal];
+    [conpetBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(headerImg);
+        make.top.equalTo(moblieLab.mas_bottom).mas_offset(3);
+    }];
+    [conpetBtn addTarget:self action:@selector(handleConpetBtn:) forControlEvents:UIControlEventTouchUpInside];
+}
+
 
 - (void)addHeadViewWith:(UIView *)headerView{
     UIImageView *headerImg = [[UIImageView alloc] initWithFrame:CGRectZero];
@@ -144,51 +234,23 @@
         make.top.mas_offset(@0);
         make.bottom.mas_offset(@0);
     }];
-    icon = [[UIImageView alloc] initWithFrame:CGRectZero];
-    [headerView addSubview:icon];
-    icon.layer.cornerRadius = 75 / 2;
-    icon.layer.masksToBounds = YES;
     if ([UserModel defaultModel].isSign) {
-        [icon sd_setImageWithURL:[NSURL URLWithString:[UserModel defaultModel].headimg]];
+        [self addUserModelView:headerImg];
     }else{
-     icon.image = [UIImage imageNamed:@"sign_03"];
+        [self addNoUserView:headerImg];
     }
-    icon.backgroundColor = [UIColor whiteColor];
-    [icon mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(headerView);
-        make.top.mas_offset(@15);
-        make.width.height.mas_offset(@75);
-    }];
-    icon.userInteractionEnabled = YES;
-    UITapGestureRecognizer *tapHeadIcon = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlePostHeaderIcon)];
-    [icon addGestureRecognizer:tapHeadIcon];
-    UILabel *moblieLab = [[UILabel alloc] initWithFrame:CGRectZero];
-    moblieLab.textAlignment = NSTextAlignmentCenter;
-    moblieLab.font = [UIFont systemFontOfSize:13];
-    moblieLab.textColor = [UIColor whiteColor];
-    [headerView addSubview:moblieLab];
-    moblieLab.text = [[UserModel defaultModel] phone];
-    [moblieLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(headerImg);
-        make.top.equalTo(icon.mas_bottom).mas_offset(10);
-    }];
-    UIButton *conpetBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-    conpetBtn.titleLabel.font = [UIFont systemFontOfSize:11];
-    [conpetBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [headerView addSubview:conpetBtn];
-    [conpetBtn setTitle:@"完善个人信息>>" forState:UIControlStateNormal];
-    [conpetBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(headerImg);
-        make.top.equalTo(moblieLab.mas_bottom).mas_offset(3);
-    }];
-    [conpetBtn addTarget:self action:@selector(handleConpetBtn:) forControlEvents:UIControlEventTouchUpInside];
+
 }
 
 - (void)handlePostHeaderIcon{
     [self pushLoginImg];
 }
 
-- (void)handleConpetBtn:(UIButton *)brn{
+- (void)handleSignBtn:(UIButton *)btn{
+    [self getToken];
+}
+
+- (void)handleConpetBtn:(UIButton *)btn{
     CertificateViewController *vc = [SBMain instantiateViewControllerWithIdentifier:@"CertificateViewController"];
     vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
@@ -307,6 +369,10 @@
     return imageDocPath;
 }
 
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:Sign_Out object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:Sign_Success object:nil];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

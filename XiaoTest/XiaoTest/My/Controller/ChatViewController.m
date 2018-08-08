@@ -45,7 +45,7 @@
         make.centerX.equalTo(self.view);
     }];
     UILabel *alertLab1 = [[UILabel alloc] init];
-    alertLab1.text = @"0512-68888888";
+    alertLab1.text = @"0512-66888880";
     alertLab1.font = [UIFont boldSystemFontOfSize:15];
     alertLab1.textColor = [UIColor orangeColor];
     [self.view addSubview:alertLab1];

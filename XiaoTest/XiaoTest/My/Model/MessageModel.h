@@ -20,4 +20,6 @@
 @property(strong, nonatomic) NSString *message_state;
 @property(strong, nonatomic) NSString *message_isLinkMsg;
 @property(assign, nonatomic) CGFloat message_height;
+
+
 @end

@@ -53,41 +53,25 @@
                             <constraint firstAttribute="bottom" secondItem="PkH-f3-Ks1" secondAttribute="bottom" id="wsb-2d-xuj"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[小想租][小想租][小想租][小想租][小想租][小想租][小想租][小想租][小想租][小想租][小想租][小想租][小想租][小想租][小想租][小想租]" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9zF-UF-lcF">
-                        <rect key="frame" x="15" y="40" width="253" height="69.5"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="82V-BN-h5K">
-                        <rect key="frame" x="293" y="67.5" width="20" height="15"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="20" id="EZt-HF-YH5"/>
-                            <constraint firstAttribute="height" constant="15" id="PFj-53-qF6"/>
-                        </constraints>
-                        <state key="normal" image="updown"/>
-                        <connections>
-                            <action selector="handleExted:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="qw5-oi-wXY"/>
-                        </connections>
-                    </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e31-hM-nFg">
+                        <rect key="frame" x="15" y="40" width="298" height="67"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="9zF-UF-lcF" secondAttribute="trailing" constant="60" id="4Wx-QD-dhD"/>
-                    <constraint firstAttribute="bottom" secondItem="9zF-UF-lcF" secondAttribute="bottom" id="4XC-Aw-Yeg"/>
-                    <constraint firstAttribute="trailing" secondItem="82V-BN-h5K" secondAttribute="trailing" constant="15" id="8xS-Ac-DmL"/>
+                    <constraint firstAttribute="bottom" secondItem="e31-hM-nFg" secondAttribute="bottom" constant="3" id="DWc-lt-Xmi"/>
+                    <constraint firstItem="e31-hM-nFg" firstAttribute="top" secondItem="LSK-zT-ovj" secondAttribute="bottom" id="FNU-oV-qHA"/>
+                    <constraint firstAttribute="trailing" secondItem="e31-hM-nFg" secondAttribute="trailing" constant="15" id="I5P-JX-e4W"/>
                     <constraint firstItem="LSK-zT-ovj" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="KjA-q4-Z50"/>
+                    <constraint firstItem="e31-hM-nFg" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="MFu-Tm-eym"/>
                     <constraint firstItem="LSK-zT-ovj" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="O2R-1S-iee"/>
-                    <constraint firstItem="9zF-UF-lcF" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="Xqv-b0-00E"/>
-                    <constraint firstItem="82V-BN-h5K" firstAttribute="centerY" secondItem="9zF-UF-lcF" secondAttribute="centerY" id="ktU-FM-mBU"/>
-                    <constraint firstItem="9zF-UF-lcF" firstAttribute="top" secondItem="LSK-zT-ovj" secondAttribute="bottom" id="nmC-EQ-7rb"/>
                     <constraint firstAttribute="trailing" secondItem="LSK-zT-ovj" secondAttribute="trailing" id="o8z-qv-h4v"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
-                <outlet property="content" destination="9zF-UF-lcF" id="AcI-hp-N3P"/>
+                <outlet property="baseView" destination="e31-hM-nFg" id="NgQ-ni-fm4"/>
                 <outlet property="date" destination="Uj8-hn-tf5" id="DCA-vz-KfN"/>
-                <outlet property="extedBtn" destination="82V-BN-h5K" id="DyT-n4-5zr"/>
                 <outlet property="title" destination="d7W-PX-XQS" id="cpk-mI-9Ti"/>
             </connections>
             <point key="canvasLocation" x="-103" y="245"/>
@@ -95,6 +79,5 @@
     </objects>
     <resources>
         <image name="my_20" width="24" height="24"/>
-        <image name="updown" width="100" height="100"/>
     </resources>
 </document>

@@ -20,11 +20,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
     // Do any additional setup after loading the view.
 }
 
 - (void)postWithURLString:(NSString *)URLString parameters:(id)parameters success:(void (^)(id _Nullable))success failure:(void (^)(NSString * _Nullable))failure{
-
+    [self checkNetworkingState];
     NSString *token = NSUserDefaultsGet(Session_token);
     NSString *requestUrl = [URLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:requestUrl] cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:15];
@@ -46,8 +47,8 @@
     NSURLSessionTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (data) {
             //拿到响应头信息
-            NSHTTPURLResponse *res = (NSHTTPURLResponse *)response;
-            NSString *errMsg = [NSString stringWithFormat:@"%@",error.userInfo[@"NSLocalizedDescription"]];
+//            NSHTTPURLResponse *res = (NSHTTPURLResponse *)response;
+//            NSString *errMsg = [NSString stringWithFormat:@"%@",error.userInfo[@"NSLocalizedDescription"]];
            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
             // use the nsdata... code removed for general purpose
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -124,12 +125,21 @@
     [self postWithURLString:[NSString stringWithFormat:@"%@/custom/getYzmToken",KBaseUrl] parameters:nil success:^(id _Nullable responseObject) {
         NSString *token = [responseObject valueForKey:@"data"];
         if (token) {
-            NSUserDefaultsSave(token, Session_token);
-            SignViewController *vc = [[SignViewController alloc] init];
-//            if (![[NSUserDefaults standardUserDefaults] valueForKey:Old_User]) {
-//                vc.isRegist = YES;
-//            }
-            [self presentViewController:vc animated:YES completion:nil];
+            if (!NSUserDefaultsGet(Alreadey_token)) {
+                NSUserDefaultsSave(token, Alreadey_token);
+                [self showTitleHUD:@"请先登录" wait:1 completion:^{
+                    SignViewController *vc = [[SignViewController alloc] init];
+                    vc.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:vc animated:YES];
+                }];
+            }else{
+                NSUserDefaultsSave(token, Alreadey_token);
+                [self showTitleHUD:@"登录失效,请重新登录" wait:1 completion:^{
+                    SignViewController *vc = [[SignViewController alloc] init];
+                    vc.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:vc animated:YES];
+                }];
+            }
         }
     } failure:^(NSString * _Nullable error) {
         NSLog(@"获取token失败:%@",error);
@@ -150,6 +160,7 @@
             {
                 //无法联网
                 NSLog(@"无法联网");
+                [self showTitleHUD:@"网络连接错误" wait:1 completion:nil];
             }
                 break;
                 

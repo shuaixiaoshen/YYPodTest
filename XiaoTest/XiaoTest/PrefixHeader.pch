@@ -19,7 +19,9 @@
 #import "SignViewController.h"
 
 #define Session_token @"Session_token"
+#define Alreadey_token @"Alreadey_token"
 #define Sign_Success  @"Sign_Success"
+#define Sign_Out  @"Sign_Out"
 #define Old_User      @"Old_User"
 
 

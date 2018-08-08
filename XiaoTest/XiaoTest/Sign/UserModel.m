@@ -25,12 +25,32 @@
     _name = [NSString stringWithFormat:@"%@",dic[@"name"]];
     _phone = [NSString stringWithFormat:@"%@",dic[@"phone"]];
     _shipaddress = [NSString stringWithFormat:@"%@",dic[@"shipaddress"]];
+    _identity = [NSString stringWithFormat:@"%@",dic[@"identity"]];
+    
+    
+    
+    
+    _family_flg = [NSString stringWithFormat:@"%@",dic[@"family_flg"]];
+    _zhifb_flg = [NSString stringWithFormat:@"%@",dic[@"zhifb_flg"]];
+    _taobao_flg = [NSString stringWithFormat:@"%@",dic[@"taobao_flg"]];
+    _student_flg = [NSString stringWithFormat:@"%@",dic[@"student_flg"]];
+    _person_flg = [NSString stringWithFormat:@"%@",dic[@"person_flg"]];
+    _link_flg = [NSString stringWithFormat:@"%@",dic[@"link_flg"]];
+    _mobile_flg = [NSString stringWithFormat:@"%@",dic[@"mobile_flg"]];
+    _identity_flg = [NSString stringWithFormat:@"%@",dic[@"identity_flg"]];
 }
 
 - (void)logOut{
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults removeObjectForKey:Session_token];
+    [userDefaults removeObjectForKey:Alreadey_token];
     _isSign = NO;
+    _cid = NULL;
+    _phone = NULL;
+    _name = NULL;
+    _headimg = NULL;
+    _shipaddress = NULL;
+    _identity = NULL;
 }
 
 

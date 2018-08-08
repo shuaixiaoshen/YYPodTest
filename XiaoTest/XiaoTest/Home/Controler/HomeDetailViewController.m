@@ -11,9 +11,10 @@
 #import "OrderViewController.h"
 #import "HomeDetailModel.h"
 
-#define blueColor [UIColor colorWithRed:98 /255.0 green:161 / 255.0 blue:242 / 255.0 alpha:1]
+#define blueColor [UIColor colorWithRed:232 /255.0 green:141 / 255.0 blue:158 / 255.0 alpha:1]
 #define defaultColor [UIColor grayColor]
-#define blueLayerColor [UIColor colorWithRed:188 /255.0 green:217 / 255.0 blue:246 / 255.0 alpha:1].CGColor
+#define noTouchColor [UIColor colorWithRed:200 /255.0 green:200 / 255.0 blue:200 / 255.0 alpha:1]
+#define blueLayerColor [UIColor colorWithRed:232 /255.0 green:141 / 255.0 blue:158 / 255.0 alpha:1].CGColor
 #define defaultLayerColor [UIColor lightGrayColor].CGColor
 @interface HomeDetailViewController ()
 
@@ -114,7 +115,7 @@
         make.bottom.mas_offset(@-50);
     }];
     moneyLab = [[UILabel alloc] init];
-//    moneyLab.text = [NSString stringWithFormat:@"￥%@/月",_model.eachprice];
+    moneyLab.textColor = [UIColor redColor];
     moneyLab.font = [UIFont boldSystemFontOfSize:14];
     [headerView addSubview:moneyLab];
     [moneyLab mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -129,12 +130,18 @@
         make.right.mas_offset(@-20);
         make.centerY.equalTo(moneyLab);
     }];
-    NSDictionary *priceDic = detailModel.priceArr.firstObject;
+    NSDictionary *priceDic;
+    if ([detailModel.priceArr count] > 1) {
+       priceDic = detailModel.priceArr[1];
+    }else{
+       priceDic = detailModel.priceArr[0];
+    }
     NSString *cycleprice = priceDic[@"cycleprice"];
     NSString *price = priceDic[@"price"];
     detailModel.product_price = price;
     moneyLab.text = [NSString stringWithFormat:@"￥%@/月",cycleprice];
-    allMoneyLab.text = [NSString stringWithFormat:@"商品价值%@",price];
+    
+    allMoneyLab.text = [NSString stringWithFormat:@"签约价%@",price];
     current_skuid = [NSString stringWithFormat:@"%@",priceDic[@"sku_id"]];
 }
 
@@ -166,7 +173,12 @@
         make.right.mas_offset(@-40);
         make.bottom.mas_offset(@-20);
     }];
-    current_date = timeArr.firstObject;
+    if (timeArr.count > 1) {
+      current_date = timeArr[1];
+    }else{
+      current_date = timeArr[0];
+    }
+    
     current_color = colorArr.firstObject;
     current_memry = memaryArr.firstObject;
     current_network = netArr.firstObject;
@@ -190,13 +202,36 @@
         make.centerY.equalTo(midView);
     }];
     for (NSInteger i = 0;i < titleArr.count; i++) {
-        UIButton *aBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+        UIButton *aBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         if (i == 0) {
-          aBtn.layer.borderColor = blueLayerColor;
-          [aBtn setTitleColor:blueColor forState:UIControlStateNormal];
+            if (type == 3 && timeArr.count == 4) {
+                aBtn.layer.borderColor = noTouchColor.CGColor;
+                [aBtn setTitleColor:noTouchColor forState:UIControlStateNormal];
+            }else{
+                aBtn.layer.borderColor = blueLayerColor;
+                [aBtn setTitleColor:blueColor forState:UIControlStateNormal];
+            }
+            if (type == 3) {
+                
+            }
         }else{
-          aBtn.layer.borderColor = defaultLayerColor;
-          [aBtn setTitleColor:defaultColor forState:UIControlStateNormal];
+            if (type == 3) {
+                if (titleArr.count == 4) {
+                    if (i == 1) {
+                        aBtn.layer.borderColor = blueLayerColor;
+                        [aBtn setTitleColor:blueColor forState:UIControlStateNormal];
+                    }else if (i == 2){
+                        aBtn.layer.borderColor = noTouchColor.CGColor;
+                        [aBtn setTitleColor:noTouchColor forState:UIControlStateNormal];
+                    }else{
+                        aBtn.layer.borderColor = defaultColor.CGColor;
+                        [aBtn setTitleColor:defaultColor forState:UIControlStateNormal];
+                    }
+                }
+            }else{
+                aBtn.layer.borderColor = defaultLayerColor;
+                [aBtn setTitleColor:defaultColor forState:UIControlStateNormal];
+            }
         }
         aBtn.layer.cornerRadius = 3.0f;
         aBtn.layer.masksToBounds = YES;
@@ -240,93 +275,124 @@
         default:
             break;
     }
+    if (timeArr.count == 4) {
+        if (btn.tag == 6333 || btn.tag == 6335) {
+            [self showTitleHUD:@"该租期业务展开中,敬请期待" wait:1 completion:nil];
+            btn.layer.borderColor = noTouchColor.CGColor;
+            [btn setTitleColor:noTouchColor forState:UIControlStateNormal];
+            return;
+        }
+    }
+    
     for (NSInteger i = 0; i < count; i++) {
         NSInteger currentTag = 3333 + i + type * 1000;
         if (btn.tag == currentTag) {
             btn.layer.borderColor = blueLayerColor;
             [btn setTitleColor:blueColor forState:UIControlStateNormal];
              if (type == 3){
-                NSDictionary *priceDic = detailModel.priceArr[i];
-                NSString *cycleprice = priceDic[@"cycleprice"];
-                NSString *price = priceDic[@"price"];
-                detailModel.product_price = price;
-                moneyLab.text = [NSString stringWithFormat:@"￥%@/月",cycleprice];
-                allMoneyLab.text = [NSString stringWithFormat:@"商品价值%@",price];
-                 current_skuid = [NSString stringWithFormat:@"%@",priceDic[@"sku_id"]];
-                 current_date = timeArr[i];
+                     NSDictionary *priceDic = detailModel.priceArr[i];
+                     NSString *cycleprice = priceDic[@"cycleprice"];
+                     NSString *price = priceDic[@"price"];
+                     detailModel.product_price = price;
+                     moneyLab.text = [NSString stringWithFormat:@"￥%@/月",cycleprice];
+                     allMoneyLab.text = [NSString stringWithFormat:@"签约价%@",price];
+                     current_skuid = [NSString stringWithFormat:@"%@",priceDic[@"sku_id"]];
+                     current_date = timeArr[i];
              }else if (type == 0){
                  current_network = netArr[i];
              }else if (type == 1){
                  current_color = colorArr[i];
              }else if (type == 2){
                  current_memry = memaryArr[i];
+                 NSDictionary *priceDic = detailModel.priceArr[i];
+                 NSString *cycleprice = priceDic[@"cycleprice"];
+                 NSString *price = priceDic[@"price"];
+                 detailModel.product_price = price;
+                 moneyLab.text = [NSString stringWithFormat:@"￥%@/月",cycleprice];
+                 allMoneyLab.text = [NSString stringWithFormat:@"签约价%@",price];
+                 current_skuid = [NSString stringWithFormat:@"%@",priceDic[@"sku_id"]];
+                 current_date = memaryArr[i];
              }
         }else{
             UIButton *otherBtn = [baseView viewWithTag:currentTag];
-            otherBtn.layer.borderColor = defaultLayerColor;
-            [otherBtn setTitleColor:defaultColor forState:UIControlStateNormal];
+            if (type == 3) {
+                if (i == 0 || i == 2) {
+                    otherBtn.layer.borderColor = noTouchColor.CGColor;
+                    [otherBtn setTitleColor:noTouchColor forState:UIControlStateNormal];
+                }else{
+                    otherBtn.layer.borderColor = defaultLayerColor;
+                    [otherBtn setTitleColor:defaultColor forState:UIControlStateNormal];
+                }
+            }else{
+                otherBtn.layer.borderColor = defaultLayerColor;
+                [otherBtn setTitleColor:defaultColor forState:UIControlStateNormal];
+            }
         }
     }
 }
 
 
 - (void)handleRequestBtn{
-    OrderViewController *orderVc = [[OrderViewController alloc] init];
-    orderVc.hidesBottomBarWhenPushed = YES;
+//    OrderViewController *orderVc = [[OrderViewController alloc] init];
+//    orderVc.hidesBottomBarWhenPushed = YES;
 //    orderVc.detailModel = detailModel;
 //    orderVc.current_skuid = current_skuid;
 //    orderVc.current_color = current_color;
 //    orderVc.current_network = current_network;
 //    orderVc.current_time = current_date;
 //    orderVc.current_memary = current_memry;
-//    [self.navigationController pushViewController:orderVc animated:YES];
-    return;
-    
+//        [self.navigationController pushViewController:orderVc animated:YES];
+//    return;
     [self showLoadingHUD];
     [self postWithURLString:[NSString stringWithFormat:@"%@/custom/getApplyStep",KBaseUrl] parameters:nil success:^(id _Nullable data) {
         [self hiddenLoadingHUD];
         NSDictionary *dataDic = data[@"data"];
-        NSInteger step = [[NSString stringWithFormat:@"%@",dataDic[@"step"]] integerValue];
-        CertificateDetailViewController *vc = [[CertificateDetailViewController alloc] init];
-        OrderViewController *orderVc = [[OrderViewController alloc] init];
-        orderVc.hidesBottomBarWhenPushed = YES;
-        orderVc.detailModel = detailModel;
-        orderVc.current_skuid = current_skuid;
-        orderVc.current_color = current_color;
-        orderVc.current_network = current_network;
-        orderVc.current_time = current_date;
-        orderVc.current_memary = current_memry;
-        switch (step - 1) {
-            case 0:
-                vc.sourceType = 0;
-                break;
-            case 1:
-                vc.sourceType = 1;
-                break;
-            case 2:
-                vc.sourceType = 2;
-                break;
-            case 3:
-                vc.sourceType = 3;
-                break;
-            case 4:
-                vc.sourceType = 4;
-                break;
-            case 5:
-                vc.sourceType = 5;
-                break;
-            case 6:
-                vc.sourceType = 6;
-                break;
-            case 7:
-                vc.sourceType = 7;
-                break;
-            default:
-                [self.navigationController pushViewController:orderVc animated:YES];
-                return ;
-                break;
+        NSString *code = [NSString stringWithFormat:@"%@",data[@"code"]];
+//        NSString *message = [NSString stringWithFormat:@"%@",data[@"message"]];
+        if ([code isEqualToString:@"1"]) {
+            NSInteger step = [[NSString stringWithFormat:@"%@",dataDic[@"step"]] integerValue];
+            CertificateDetailViewController *vc = [[CertificateDetailViewController alloc] init];
+            OrderViewController *orderVc = [[OrderViewController alloc] init];
+            orderVc.hidesBottomBarWhenPushed = YES;
+            orderVc.detailModel = detailModel;
+            orderVc.current_skuid = current_skuid;
+            orderVc.current_color = current_color;
+            orderVc.current_network = current_network;
+            orderVc.current_time = current_date;
+            orderVc.current_memary = current_memry;
+            switch (step - 1) {
+                case 0:
+                    vc.sourceType = 0;
+                    break;
+                case 1:
+                    vc.sourceType = 1;
+                    break;
+                case 2:
+                    vc.sourceType = 2;
+                    break;
+                case 3:
+                    vc.sourceType = 3;
+                    break;
+                case 4:
+                    vc.sourceType = 4;
+                    break;
+                case 5:
+                    vc.sourceType = 5;
+                    break;
+                case 6:
+                    vc.sourceType = 6;
+                    break;
+                case 7:
+                    vc.sourceType = 7;
+                    break;
+                case 8:
+                    [self.navigationController pushViewController:orderVc animated:YES];
+                    return ;
+                default:
+                    break;
+            }
+            [self.navigationController pushViewController:vc animated:YES];
         }
-        [self.navigationController pushViewController:vc animated:YES];
     } failure:^(NSString * _Nullable error) {
         [self hiddenLoadingHUD];
     }];

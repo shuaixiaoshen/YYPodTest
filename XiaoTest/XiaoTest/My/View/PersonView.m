@@ -27,7 +27,11 @@
 }
 
 - (NSString *)tranfromWithKey:(NSString *)key{
-    return [NSString stringWithFormat:@"%@",_infodic[key]];
+    NSString *str = [NSString stringWithFormat:@"%@",_infodic[key]];
+    if (!str) {
+        str = @"";
+    }
+    return str;
 }
 
 - (void)startSetUp{
@@ -116,7 +120,7 @@
     UIView *cardView = [self addBottomViewWithView:stuNumView title:@"银行卡开户行" aIndex:11];
     UIView *cardDetaiView = [self addBottomViewWithView:cardView title:@"联系邮箱" aIndex:12];
     workView = [self addImgBtnWithType:1 andView:cardDetaiView];
-    if (_code != 10) {
+//    if (_code != 10) {
         requestBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         requestBtn.backgroundColor = [UIColor colorWithRed:73 /255.0 green:146 / 255.0 blue:241 / 255.0 alpha:1];
         requestBtn.titleLabel.font = [UIFont systemFontOfSize:14];
@@ -129,7 +133,7 @@
             make.width.mas_offset(KscreenWidth - 80);
             make.top.equalTo(workView.mas_bottom).mas_offset(100);
         }];
-    }
+//    }
 }
 
 - (UIView *)addImgBtnWithType:(NSInteger)type andView:(UIView *)aView{

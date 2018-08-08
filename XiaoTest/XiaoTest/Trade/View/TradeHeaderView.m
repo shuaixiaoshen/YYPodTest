@@ -22,18 +22,17 @@
     [headerImg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.mas_offset(@10);
         if (_type == 3) {
-          make.bottom.mas_offset(@5);
+          make.bottom.mas_offset(@-5);
         }else{
           make.bottom.mas_offset(@-45);
         }
-        
         make.right.mas_offset(@-10);
     }];
     UIImageView *stateImg = [[UIImageView alloc] init];
     [headerImg addSubview:stateImg];
     [stateImg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.right.mas_offset(@0);
-        make.width.height.mas_offset(@80);
+        make.width.height.mas_offset(@70);
     }];
     UILabel *activeLab = [[UILabel alloc] initWithFrame:CGRectZero];
     activeLab.textAlignment = NSTextAlignmentLeft;
@@ -90,28 +89,14 @@
         make.top.equalTo(moblieLab.mas_bottom).mas_offset(3);
         make.left.mas_offset(@0);
     }];
-    if (_type == 2) {
-        UIButton *compulteBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-        [compulteBtn setTitle:@"结清账单" forState:UIControlStateNormal];
-        [compulteBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        compulteBtn.layer.cornerRadius = 5.0f;
-        compulteBtn.layer.masksToBounds = YES;
-        compulteBtn.backgroundColor = [UIColor colorWithRed:83 / 255.0 green:149 / 255.0 blue:240 /255.0 alpha:1];
-        [detailView addSubview:compulteBtn];
-        [compulteBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.mas_offset(@-5);
-            make.centerY.equalTo(detailView);
-            make.width.mas_offset(@95);
-        }];
-    }
     UILabel *shenheLab = [[UILabel alloc] initWithFrame:CGRectZero];
     shenheLab.textAlignment = NSTextAlignmentLeft;
     shenheLab.font = [UIFont boldSystemFontOfSize:12];
     shenheLab.textColor = [UIColor whiteColor];
-    [detailView addSubview:shenheLab];
+    [self addSubview:shenheLab];
     [shenheLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_offset(@45);
-        make.left.mas_offset(@0);
+        make.bottom.mas_offset(@-45);
+        make.left.mas_offset(@20);
     }];
     if (_type == 3) {
         if ([model.state isEqualToString:@"8"]) {
@@ -122,7 +107,7 @@
             compulteBtn.layer.cornerRadius = 5.0f;
             compulteBtn.layer.masksToBounds = YES;
             compulteBtn.backgroundColor = [UIColor whiteColor];
-            [detailView addSubview:compulteBtn];
+            [self.contentView addSubview:compulteBtn];
             [compulteBtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.right.mas_offset(@-15);
                 make.centerY.equalTo(shenheLab);
@@ -174,12 +159,12 @@
     UIImageView *activeImg = [[UIImageView alloc] init];
     [footView addSubview:activeImg];
     activeImg.image = [UIImage imageNamed:@"trade_edit"];
-    activeImg.contentMode = UIViewContentModeCenter;
+//    activeImg.contentMode = UIViewContentModeCenter;
     [activeImg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_offset(@13);
-        make.bottom.mas_offset(@0);
-        make.top.mas_offset(@3);
-        make.width.mas_offset(@30);
+        make.centerY.equalTo(footView);
+        make.height.mas_offset(@23);
+        make.width.mas_offset(@23);
     }];
     UILabel *eidtLab = [[UILabel alloc] initWithFrame:CGRectZero];
     eidtLab.textAlignment = NSTextAlignmentLeft;
@@ -189,7 +174,7 @@
     eidtLab.text = @"租赁缴纳记录";
     [eidtLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(activeImg);
-        make.left.equalTo(activeImg.mas_right);
+        make.left.equalTo(activeImg.mas_right).mas_offset(3);
     }];
     UIButton *activeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [activeBtn setImage:[UIImage imageNamed:@"my_09"] forState:UIControlStateNormal];
@@ -260,7 +245,12 @@
     }else if (index == 1){
       dateLab.text = currentModel.expectday;
     }else{
-      dateLab.text = currentModel.product_rate;
+        if (currentModel.product_rate.length < 1) {
+            dateLab.text = @"0.03";
+        }else{
+            dateLab.text = currentModel.product_rate;
+        }
+      
     }
     
     [dateLab mas_makeConstraints:^(MASConstraintMaker *make) {

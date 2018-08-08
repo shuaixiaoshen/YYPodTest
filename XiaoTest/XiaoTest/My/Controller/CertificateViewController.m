@@ -68,7 +68,7 @@
         make.right.mas_offset(@-30);
         make.bottom.mas_offset(@0);
     }];
-    NSArray *titleArr = @[@"身份信息",@"个人信息",@"联系人信息",@"常用联系人",@"运营商认证",@"淘宝",@"支付宝认证",@"征信认证"];
+    NSArray *titleArr = @[@"身份信息",@"个人信息",@"亲属信息",@"常用联系人",@"运营商认证",@"淘宝",@"支付宝认证",@"征信认证"];
     NSArray *imgArr = @[@"auth_icon_id",@"auth_icon_personal",@"auth_icon_contact",@"auth_icon_contact_more",@"auth_icon_run",@"auth_icon_taobao",@"auth_icon_ali",@"auth_icon_school"];
     for (int i = 0; i < 8; i++) {
         CGFloat startX = 0.0f;
@@ -126,18 +126,34 @@
         case 4:
             vc.sourceType = 4;
              urlStr = [NSString stringWithFormat:@"%@/custom/toMobileAuth",KBaseUrl];
+            if ([[UserModel defaultModel].mobile_flg isEqualToString:@"1"]) {
+                [self showTitleHUD:@"此项已认证" wait:1 completion:nil];
+                return;
+            }
             break;
         case 5:
             vc.sourceType = 5;
              urlStr = [NSString stringWithFormat:@"%@/custom/toTaobaoAuth",KBaseUrl];
+            if ([[UserModel defaultModel].taobao_flg isEqualToString:@"1"]) {
+                [self showTitleHUD:@"此项已认证" wait:1 completion:nil];
+                return;
+            }
             break;
         case 6:
             vc.sourceType = 6;
              urlStr = [NSString stringWithFormat:@"%@/custom/toZhifbAuth",KBaseUrl];
+            if ([[UserModel defaultModel].zhifb_flg isEqualToString:@"1"]) {
+                [self showTitleHUD:@"此项已认证" wait:1 completion:nil];
+                return;
+            }
             break;
         default:
             vc.sourceType = 7;
              urlStr = [NSString stringWithFormat:@"%@/custom/toStudentAuth",KBaseUrl];
+            if ([[UserModel defaultModel].student_flg isEqualToString:@"1"]) {
+                [self showTitleHUD:@"此项已认证" wait:1 completion:nil];
+                return;
+            }
             break;
     }
     [self postWithURLString:urlStr parameters:nil success:^(id _Nullable data) {
@@ -146,7 +162,10 @@
         NSDictionary *dataDic = data[@"data"];
         if ([code isEqualToString:@"0"]) {
             
-            if (dataDic && [dataDic isKindOfClass:[NSDictionary class]]) {
+            if (dataDic) {
+                if (vc.sourceType == 3) {
+                    vc.infoArr = data[@"data"];
+                }
                 vc.infoDic = dataDic;
                 vc.code = 10;
                 [self.navigationController pushViewController:vc animated:YES];

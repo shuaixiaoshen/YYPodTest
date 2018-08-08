@@ -61,7 +61,7 @@
                                         <rect key="frame" x="336" y="33" width="24" height="24"/>
                                         <state key="normal" image="my_20"/>
                                         <connections>
-                                            <action selector="traerChat:" destination="O5E-W1-JWg" eventType="touchUpInside" id="O9e-ao-WLp"/>
+                                            <action selector="pushMessage" destination="BYZ-38-t0r" eventType="touchUpInside" id="DJ7-Fg-qqm"/>
                                         </connections>
                                     </button>
                                 </subviews>
